@@ -11,6 +11,7 @@ public class Resturant {
     private double rating;
     private String address;
     private  ArrayList<Dish> menu;
+    private static int dishCounter = 0 ;
     @Override
     public boolean equals(Object obj) {
         Resturant resturant = (Resturant) obj;
@@ -39,6 +40,7 @@ public class Resturant {
 
     public String showMenu() {
         StringBuilder menulist = new StringBuilder();
+
         ArrayList<Dish> menu = getMenu();
         menu.stream()
                .collect(Collectors.groupingBy(Dish::getCategory))
@@ -46,9 +48,8 @@ public class Resturant {
                    menulist.append( "===" ).append(category).append(" ====\n");
                     dishes.stream()
                             .forEach(dish ->
-                                    menulist.append("\t-").append(dish.getName()).append(" ").append(dish.getPrice()).append(" \n"));
-
-
+                                    menulist.append("\t-").append(this.menu.indexOf(dish)+1).append(dish.getName()).append(" ").append(dish.getPrice()).append(" \n")
+                            );
                });
 
         return menulist.toString();
@@ -109,12 +110,14 @@ public class Resturant {
             throw new IllegalArgumentException("Dish cannot be null");
         //new menu
             getMenu().add(dish);
+            dishCounter++;
     }
     public void removeDish(Dish dish) {
         if(dish==null) {
             throw new IllegalArgumentException("Dish not found");
         }
         getMenu().remove(dish);
+        dishCounter--;
     }
 
     public void updateDish(Dish oldDish, Dish newDish) {
