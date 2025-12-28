@@ -1,5 +1,3 @@
-package Talabat;
-
 import java.util.Scanner;
 
 public abstract class User {
@@ -9,19 +7,18 @@ public abstract class User {
 
 
     public User(String userName, String passWord, boolean logedIn){
-        this.userName=userName;
-        this.passWord=passWord;
-        this.logedIn=logedIn;
-    } //parametarized cost
+        setUserName(userName);
+        setPassWord(passWord);
+        setLogedIn(logedIn);
+    }
 
     public User(){
-    }                                                      //default const
+        this("","",false);
+    }
 
     public User(User user){
-        this.userName= user.userName;
-        this.passWord=user.passWord;
-        this.logedIn=user.logedIn;
-    }                                          //copy const
+        this(user.userName, user.passWord,user.logedIn);
+    }
 
     public String getUserName() {
         return userName;
@@ -56,4 +53,3 @@ public abstract class User {
     }
 
 }
-
