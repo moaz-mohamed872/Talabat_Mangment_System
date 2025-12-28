@@ -1,6 +1,6 @@
 package Talabat;
 
-public class OrderItem {
+public class OderItem {
 
     private int quantity;
     private double TotalPrice;
@@ -8,15 +8,15 @@ public class OrderItem {
     private Dish orderedDish;
 
 
-    public OrderItem(int quantity, Dish orderedDish) {
+    public OderItem(int quantity, Dish orderedDish) {
         this.quantity = quantity;
         this.orderedDish = orderedDish;
     }
-    public OrderItem(){
+    public OderItem(){
         this(0, null);
     }
 
-    public OrderItem(OrderItem otherOrderItem) {
+    public OderItem(OderItem otherOrderItem) {
 //            this(otherOrderItem.quantity, new Dish(otherOrderItem.getOrderedDish())));
 
     }

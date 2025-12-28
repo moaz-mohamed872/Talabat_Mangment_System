@@ -100,7 +100,7 @@ public class Customer extends User {
         Order ord;
          char answer;
 
-         OderItem ordItem = new OderItem();
+         //OderItem ordItem = new OderItem();
          // ord.setResturant = res;
          // ord.setDeliveryTime = ....;
 
