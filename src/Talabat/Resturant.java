@@ -2,6 +2,7 @@ package Talabat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Resturant {
     private String name;
@@ -9,7 +10,6 @@ public class Resturant {
     private double rating;
     private String address;
     private HashMap<Category, ArrayList<Dish>> menu;
-
     public Resturant(String name, String phone, double rating, String address, HashMap<Category, ArrayList<Dish>> menu) throws IllegalArgumentException {
         try {
             setName(name);
@@ -22,7 +22,6 @@ public class Resturant {
             throw exception;
         }
     }
-
     public Resturant() {
         this("", "", 0, "", new HashMap<>());
     }
@@ -101,5 +100,39 @@ public class Resturant {
                 this.menu.get(category).add(new Dish(dish));
             }
         }
+    }
+
+    public void addDish(Dish dish, Category category) {
+        if (dish == null)
+            throw new IllegalArgumentException("Dish cannot be null");
+
+        if (!menu.containsKey(category))
+            throw new IllegalArgumentException("Invalid category");
+
+        menu.get(category).add(dish);
+    }
+    public void removeDish(Dish dish, Category category) {
+        if(!(menu.containsKey(category) && dish!=null)) {
+            throw new IllegalArgumentException("Dish not found");
+        }
+        menu.get(category).remove(dish);
+    }
+
+    public void updateDish(Dish oldDish, Dish newDish) {
+        if (oldDish == null || newDish == null)
+            throw new IllegalArgumentException("Dishes cannot be null");
+
+        Category category = oldDish.getCategory();
+
+        if (!menu.containsKey(category))
+            throw new IllegalArgumentException("Category not found");
+
+        ArrayList<Dish> dishes = menu.get(category);
+        int index = dishes.indexOf(oldDish);
+        if (index  < 0 )
+            throw new IllegalArgumentException("Dish not found");
+
+        dishes.set(index, newDish);
+
     }
 }
