@@ -53,4 +53,9 @@ public abstract class User {
         this.logedIn=false;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        User other = (User) obj;
+        return this.userName.equals(other.getUserName());
+    }
 }
