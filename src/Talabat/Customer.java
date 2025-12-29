@@ -84,19 +84,24 @@ public class Customer extends User {
      */
 
      private Resturant showResLis() {
-         Resturant restaurantPicked;
+         Resturant restaurantPicked; //this var will have the Restaurant that the Customer Choose
+
+         //this restaurantLimit it has the total number we have of Restaurant as String to use in a condition
+         String restaurantLimit = Integer.toString(ResturantRepo.getResturantlist().size());
          //show all Restaurants for the Customer
          presenter.print("Restaurants");
          for(int i=0;i<ResturantRepo.getResturantlist().size();i++){
              presenter.print('\t'+ i+1+": "+ResturantRepo.getResturantlist().get(i).getName());
          }
          presenter.print("Choose the number of the Restaurant you want (enter X to cancle) : ");
+         //this loop to validate the Choice of the Customer of the Restaurants
          while(true) {
              String choice = presenter.read();
              if (choice.toLowerCase().charAt(0) == 'x') {
                  return null;
              }
-             else if (Integer.valueOf(choice)>0 &&Integer.valueOf(choice)<= ResturantRepo.getResturantlist().size()+1){
+             // this condition check if the Entered String is Number because if it was a String fn valueOf wiil Throw Exception
+             else if ((choice.charAt(0)>'0'&&choice.charAt(restaurantLimit.length()) <= restaurantLimit.charAt(restaurantLimit.length()) )&&(Integer.valueOf(choice)>0 &&Integer.valueOf(choice)<= ResturantRepo.getResturantlist().size())){
                   restaurantPicked =ResturantRepo.getResturantlist().get(Integer.valueOf(choice));
                  break;
              }
@@ -104,12 +109,7 @@ public class Customer extends User {
                  presenter.print("Invalid Choice plz Enter a valid Choice");
                  continue;
              }
-
-
          }
-
-
-
         placeOrder(restaurantPicked);
 
         return restaurantPicked;
@@ -120,36 +120,59 @@ public class Customer extends User {
      takes the order from the customer and returned it for the next processes
     */
      private Order placeOrder(Resturant res )  {
-        Order ord;
-         char answer;
+        Order ord = new Order(); //this will have the orer of the customer will order
 
-         //OderItem ordItem = new OderItem();
-         // ord.setResturant = res;
-         // ord.setDeliveryTime = ....;
+         //this dishLimit it has the total number we have of Dishes as String to use in a condition
+        String dishLimit = Integer.toString(res.getMenu().size());
+         char answer; //this var for if the customer want to add another dish
 
+         // this arraylist to add init the orderitem for customer and to make the order arraylist of menu have it
+         ArrayList<OderItem> ordItem = new ArrayList<>();
+
+         OderItem orderCustomerPicked = new OderItem();
+            ord.setResturant(res);
+
+            presenter.print("Menu"+"\n\t");
             presenter.print(res.showMenu());
         while(true){
             presenter.print("Enter Dish no. (enter X to cancle) : ");
-            String dishChoice = presenter.read();
-            if(dishChoice.toLowerCase().charAt(0) == 'x' ){
+            String dishChoice = presenter.read();// this var is the customer when he chooses number dish he want in menu
+
+            if(dishChoice.toLowerCase().charAt(0) == 'x'){
                 return null;
             }
-            //else if()
+            // this condition check if the Entered String is Number because if it was a String fn valueOf wiil Throw Exception
+           else if((dishChoice.charAt(0)>'0'&&dishChoice.charAt(dishLimit.length()) <= dishLimit.charAt(dishLimit.length()) )
+                    &&Integer.valueOf(dishChoice) > 0 && Integer.valueOf(dishChoice) <= res.getMenu().size()){
 
+                orderCustomerPicked.setOrderedDish(res.getMenu().get(Integer.valueOf(dishChoice)-1));
+            }
+           else {
+               presenter.print("Invalid Choice plz Enter a valid Choice");
+               continue;
+            }
 
-            // you will the dish and add it in orderitem var that is called ordItem
-            //and then you will add the ordItem in the arraylist of the dishes in the order
+            presenter.print("Enter the amount: ");
+            int amountOfDish =Integer.valueOf(presenter.read());//this var for the customer enter how many dish he wants
 
-            presenter.print("Enter the amount ");
+            //this while loop for thr validation of the amount of the dishes
+            while(true) {
+                if (amountOfDish>0) {
+                    orderCustomerPicked.setQuantity(amountOfDish);
+                    break;
 
-            //ord.dishList.get(dishList.size()-1).quantity = input.nextInt();
+                }
+                else{
+                    presenter.print("Plz Enter a Valid Amount");
+                }
 
+            }
+            ordItem.add(orderCustomerPicked);
             presenter.print("Do you want another Dish ? (Y/N)");
             answer = presenter.read().charAt(0);
 
                 if(toLowerCase(answer) == 'n') {
-                    //here remeber that you will the constructur all the data you want
-                    ord = new Order();
+                    ord.setMenu(ordItem);
                     break;
                 }
                else if (!(toLowerCase(answer) == 'y')) {
@@ -157,11 +180,9 @@ public class Customer extends User {
                     continue;
                 }
 
-
         }
         this.orders.add(ord);
-        // ord.showOrder();
-
+        ord.showOrder();
         return ord;
      }
 
@@ -170,71 +191,57 @@ public class Customer extends User {
     available and the menu of the Restaurant that he chose
     */
      public void newOrder(){
-
-        while(true){
-            if(this.showResLis() == null){
+        while(true) {
+            if (this.showResLis() == null) {
                 return;
             }
-
         }
-
-
-
 
      }
 
      public void cancelOrder(int orderNumber){
-        for(int i=0 ;i<this.orders.size();i++){
-            /*
-            show Orders all he has and the Restaurants
 
-            if(this.orders.number==orderNumber&&order.status==false)
+         for(int i=0;i<this.orders.size();i++){
+             presenter.print((this.orders.get(i).getNumber()));
+             presenter.print(this.orders.get(i).getResturant().getName());
+             presenter.print("---------------------- \t ----------------------------");
+         }
+        for(int i=0 ;i<this.orders.size();i++){
+           if(this.orders.get(i).getNumber()==orderNumber)
             {
             this.orders.remove(i);
 
             }
-
-
-             */
         }
-
-
      }
 
      public void trackOrder(){
         Integer orderPicked;
-        for(int i=0;i<this.orders.size();i++){
+         for(int i=0;i<this.orders.size();i++){
+             presenter.print((this.orders.get(i).getNumber()));
+             presenter.print(this.orders.get(i).getResturant().getName());
+             presenter.print("---------------------- \t ----------------------------");
+         }
+         presenter.print("Enter the number of the Order you want to track");
 
-            /*
-            if(this.orders.status==true){
-                //YOU WILL PRINT ALL THE ORDERS RESTAURNAT HERE AND NUMBER AND STATUS
+         //this loop to see if the number he enterd for the orderNumber valid or not found
+         while(true) {
+             orderPicked = Integer.valueOf(presenter.read());
+             boolean found =false;
+             for (int i = 0; i < this.orders.size(); i++) {
 
-
-            }
-
-             */
-
-            orderPicked = Integer.valueOf(presenter.read());
-
-            /*
-             for(int i=0;i<this.orders.size();i++){
-                 if(this.orders.get(i).number == orderPicked){
-                     Order orderTracked = this.orders.get(i);
+                 if (this.orders.get(i).getNumber() == orderPicked) {
+                     this.orders.get(i).showOrder();
+                     found = true;
                  }
 
              }
-
-
-             */
-
-            //System.out.println(orderTracked.getNumber);
-            //System.out.println(orderTracked.getResturant.getName);
-            // System.out.println(orderTracked.getDeliveryTime);
-            // System.out.println(orderTracked.getStatus);
-            // System.out.println(orderTracked.getTotalPrice);
-
-        }
-
+             if(found)
+                 break;
+             else {
+                 presenter.print("Plz Enter a Valid Order Number");
+             }
+         }
 
      }
 
