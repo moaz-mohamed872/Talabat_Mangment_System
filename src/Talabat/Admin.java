@@ -170,9 +170,10 @@ public class Admin extends User {
                     String dish_discription=input2.nextLine();
 
 
-                    ArrayList<Dish> d=new ArrayList<>();
-                    d.add(dish_name,dish_category,dish_price,dish_discription);
-                    ResturantRepo.getResturantlist().set(get(index),d);
+                    ArrayList<Dish> d = new ArrayList<>();
+                    //Dish enteredDish = new Dish(dish_name,dish_category,dish_price,dish_discription);
+                    //d.add(enteredDish);
+                   // ResturantRepo.getResturantlist().set(get(index),d);
 
 
                 }
@@ -249,7 +250,8 @@ public class Admin extends User {
             Scanner input=new Scanner(System.in);
             String chois= input.nextLine();
             if (chois=="cancle"){
-                CustomerRepo.getCustomerList().get(index).cancelOrder();
+                // here there is an error because the fn cancelOrder takes int (orderNumber you want to cancel) as parameter
+                //CustomerRepo.getCustomerList().get(index).cancelOrder();
             }
 
 
