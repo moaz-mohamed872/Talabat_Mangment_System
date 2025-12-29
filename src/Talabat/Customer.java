@@ -1,6 +1,6 @@
 package Talabat;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 import static java.lang.Character.toLowerCase;
 
 public class Customer extends User {
@@ -173,6 +173,8 @@ public class Customer extends User {
 
                 if(toLowerCase(answer) == 'n') {
                     ord.setMenu(ordItem);
+                    //here remeber that you will the constructur all the data you want
+                    ord = new Order(presenter);
                     break;
                 }
                else if (!(toLowerCase(answer) == 'y')) {
