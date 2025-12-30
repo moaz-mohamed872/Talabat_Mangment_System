@@ -11,13 +11,6 @@ public class Dish {
     private boolean visable = false;
 
 
-    @Override
-    public boolean equals(Object obj) {
-        Dish dish = (Dish) obj;
-        return this.name.equals(dish.getName());
-    }
-
-
     public Dish(String name, String discription, Category category, double price) throws IllegalArgumentException {
         try {
             setName(name);
@@ -28,6 +21,11 @@ public class Dish {
             System.out.println(e.getMessage());
             throw e;
         }
+    }
+
+    public Dish(String name) {
+        this();
+        setName(name);
     }
 
     public Dish()  {
@@ -96,5 +94,20 @@ public class Dish {
 
     public void setVisable(boolean visable) {
         this.visable = visable;
+    }
+
+    @Override
+    public String toString() {
+        return "name='" + name +
+                ", category=" + category +
+                ", price=" + price +
+                ",timesOrdered=" + timesOrdered +
+                ", discription='" + discription;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Dish dish = (Dish) obj;
+        return this.name.equals(dish.getName());
     }
 }

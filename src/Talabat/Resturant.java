@@ -19,6 +19,11 @@ public class Resturant {
         return this.name.equals(resturant.getName());
     }
 
+    public Resturant(String name) {
+        this();
+        setName(name);
+    }
+
     public Resturant(String name, String phone, double rating, String address, ArrayList<Dish> menu) throws IllegalArgumentException {
         try {
             setName(name);

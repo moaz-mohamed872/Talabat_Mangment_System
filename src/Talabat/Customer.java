@@ -139,6 +139,7 @@ public class Customer extends User {
      the placeOrder() Method it takes the Restaurant that returned by the showResLis() and then
      takes the order from the customer and returned it for the next processes
     */
+
      private Order placeOrder(Resturant res )  {
          Order ord = new Order(presenter); //this will have the orer of the customer will order
 
@@ -150,10 +151,11 @@ public class Customer extends User {
          ArrayList<OrderItem> ordItem = new ArrayList<>();
 
          OrderItem orderCustomerPicked = new OrderItem();
-            ord.setResturant(res);
+         ord.setResturant(res);
 
-            presenter.print("Menu"+"\n\t");
-            presenter.print(res.showMenu());
+         presenter.print("Menu"+"\n\t");
+         presenter.print(res.showMenu());
+
         while(true) {
             presenter.print("Enter Dish no. (enter X to cancel) : ");
             String dishChoice = presenter.read();// this var is the customer when he chooses number dish he want in menu
@@ -227,10 +229,7 @@ public class Customer extends User {
          }
         for(int i=0 ;i<this.orders.size();i++){
            if(this.orders.get(i).getNumber()==orderNumber)
-            {
             this.orders.remove(i);
-
-            }
         }
      }
 

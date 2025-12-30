@@ -3,84 +3,81 @@ package Talabat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Admin extends User {
+public class Admin  {
 
-    private Scanner scanner = new Scanner(System.in);
+    private Presentable presenter;
+
+    public Admin(Presentable presenter) {
+        this.presenter = presenter;
+    }
 
     public void adminMenu() {
-        int choice;
+        String choice;
 
         do {
-            System.out.println("\n====== ADMIN MENU ======");
-            System.out.println("1. View Customers");
-            System.out.println("2. View Restaurants");
-            System.out.println("3. Add Restaurant");
-            System.out.println("4. Edit Restaurant");
-            System.out.println("5. Edit Customer");
-            System.out.println("6. Remove Customer");
-            System.out.println("0. Logout");
+            presenter.print("\n====== ADMIN MENU ======\n" +
+                    "1. View Customers\n" +
+                    "2. View Restaurants\n" +
+                    "3. Add Restaurant\n" +
+                    "4. Edit Restaurant\n" +
+                    "5. Edit Customer\n" +
+                    "6. Remove Customer\n" +
+                    "0. Logout \n");
 
-            choice = scanner.nextInt();
+            choice = presenter.read();
 
+            if (choice.equals("1"))
+                viewCustomerList(CustomerRepo.getCustomerList());
+            else if (choice.equals("2"))
+                viewResList(ResturantRepo.getResturantlist());
+            else if (choice.equals("3"))
+                addRes();
+            else if (choice.equals("4")) {
+                presenter.print("Enter restaurant name");
+                editResDetail(presenter.read());
+            } else if (choice.equals("5")) {
+                presenter.print("Enter customer phone no.");
+                editCustomerDetail(presenter.read());
+            } else if (choice.equals("6")) {
+                presenter.print("Enter customer name");
+                removeCustomer(presenter.read());
+            } else
+                presenter.print("invalid input");
 
-            switch (choice) {
-                case 1:
-                    viewCustomerList(CustomerRepo.getCustomerList());
-                    break;
-
-                case 2:
-                    viewResList(ResturantRepo.getResturantlist());
-                    break;
-
-                case 3:
-                    addRes();
-                    break;
-
-                case 4:
-                    System.out.println("Enter restaurant name");
-                    editResDetail(scanner.nextLine());
-                    break;
-
-                case 5:
-                    System.out.println("Enter customer name");
-                    editCustomerDetail(scanner.nextLine());
-                    break;
-
-                case 6:
-                    System.out.println("Enter customer name");
-                    removeCustomer(scanner.nextLine());
-                    break;
-
-                case 0:
-                    logout();
-                    break;
-            }
-
-        } while (choice != 0);
+        } while (!choice.equals("0"));
     }
 
     public void viewCustomerList(ArrayList<Customer> list) {
         for (Customer c : list)
-            System.out.println(c);
+            presenter.print(c);
     }
 
     public void viewResList(ArrayList<Resturant> list) {
         for (Resturant r : list)
-            System.out.println(r.getName());
+            presenter.print(r.getName());
     }
 
     public void addRes() {
-        System.out.println("Restaurant name");
-        String name = scanner.nextLine();
+        presenter.print("Restaurant name");
+        String name = presenter.read();
 
-        System.out.println("Phone");
-        String phone = scanner.nextLine();
+        presenter.print("Phone");
+        String phone = presenter.read();
 
-        System.out.println("Address");
-        String address = scanner.nextLine();
+        presenter.print("Address");
+        String address = presenter.read();
 
-        System.out.println("Rating");
-        double rating = scanner.nextDouble();
+        double rating;
+        while (true){
+            try {
+                presenter.print("Rating");
+                rating = Double.valueOf(presenter.read());
+            } catch (NumberFormatException e) {
+                presenter.print("invalid input");
+                continue;
+            }
+            break;
+        }
 
 
         ArrayList<Dish> menu = new ArrayList<>();
@@ -88,152 +85,173 @@ public class Admin extends User {
         while (true) {
             Dish d = new Dish();
 
-            System.out.println("Dish name");
-            d.setName(scanner.nextLine());
+            presenter.print("Dish name");
+            d.setName(presenter.read());
 
-            System.out.println("Category (A Appetizer /M Main_Course /D Desert /B brevelge)");
-            char c = scanner.nextLine().toUpperCase().charAt(0);
+            presenter.print("Category (A Appetizer /M Main_Course /D Desert /B brevelge)");
+            char c = presenter.read().toUpperCase().charAt(0);
 
             if (c == 'A') d.setCategory(Category.APPETIZER);
             if (c == 'M') d.setCategory(Category.MAIN_COURSE);
             if (c == 'D') d.setCategory(Category.DESSERT);
             if (c == 'B') d.setCategory(Category.DRINK);
 
-            System.out.println("Price");
-            d.setPrice(scanner.nextDouble());
-
+            try {
+                presenter.print("Price");
+                d.setPrice(Double.valueOf(presenter.read()));
+            } catch (NumberFormatException e) {
+                presenter.print("invalid input");
+                continue;
+            }
             menu.add(d);
 
-            System.out.println("Add another dish? (y/n)");
-            if (scanner.nextLine().equalsIgnoreCase("n"))
+            presenter.print("Add another dish? (y/n)");
+            if (presenter.read().equalsIgnoreCase("n"))
                 break;
         }
 
-        ResturantRepo.getResturantlist()
-                .add(new Resturant(name, phone, rating, address, menu));
+        ResturantRepo.getResturantlist().add(new Resturant(name, phone, rating, address, menu));
     }
 
     public void editResDetail(String name) {
-        Resturant resturant = new Resturant();
-        for (Resturant r : ResturantRepo.getResturantlist()){
-            if (r.getName().equals(name)) {
-                resturant = r;
-            }
-        }
+        Resturant resturant = ResturantRepo.getResturantlist().get(
+                ResturantRepo.getResturantlist().indexOf(new Resturant(name)));
 
-        int choice;
+        String choice;
 
         do {
-            System.out.println("\n--- Edit Restaurant ---");
-            System.out.println("1. Edit Info");
-            System.out.println("2. Add Dish");
-            System.out.println("3. Remove Dish");
-            System.out.println("4. Update Dish");
-            System.out.println("0. Back");
+            presenter.print("\n--- Edit Restaurant ---\n" +
+                    "1. Edit Info\n" +
+                    "2. Add Dish\n " +
+                    "3. Remove Dish\n " +
+                    "4. Update Dish\n " +
+                    "0. Back");
 
-            choice = scanner.nextInt();
+            choice = presenter.read();
 
+            if (choice.equals("1")) {
+                presenter.print("New name");
+                resturant.setName(presenter.read());
 
-            if (choice == 1) {
-                System.out.println("New name");
-                resturant.setName(scanner.nextLine());
+                presenter.print("New address");
+                resturant.setAddress(presenter.read());
 
-                System.out.println("New address");
-                resturant.setAddress(scanner.nextLine());
+                presenter.print("New phone");
+                resturant.setPhone(presenter.read());
 
-                System.out.println("New phone");
-                resturant.setPhone(scanner.nextLine());
-
-                System.out.println("New rating");
-                resturant.setRating(scanner.nextDouble());
-
-            }
-
-            if (choice == 2) {
-                Dish d = new Dish();
-
-                System.out.println("Dish name");
-                d.setName(scanner.nextLine());
-
-                System.out.println("Category (A Appetizer /M Main_Course /D Desert /B brevelge)");
-                char c = scanner.nextLine().toUpperCase().charAt(0);
-
-                if (c == 'A') d.setCategory(Category.APPETIZER);
-                if (c == 'M') d.setCategory(Category.MAIN_COURSE);
-                if (c == 'D') d.setCategory(Category.DESSERT);
-                if (c == 'B') d.setCategory(Category.DRINK);
-
-                System.out.println("Price");
-                d.setPrice(scanner.nextDouble());
-
-
-                resturant.addDish(d);
-            }
-
-            if (choice == 3) {
-                System.out.println("Dish name");
-               for (Dish dish : resturant.getMenu()){
-                   if (dish.getName().equals(scanner.nextLine())) {
-                       resturant.removeDish(dish);
-                   }
-               }
-            }
-
-            if (choice == 4) {
-                System.out.println("Old dish name:");
-                    ArrayList<Dish> d = new ArrayList<>();
-                    //Dish enteredDish = new Dish(dish_name,dish_category,dish_price,dish_discription);
-                    //d.add(enteredDish);
-                   // ResturantRepo.getResturantlist().set(get(index),d);
-
-                String oldName = scanner.nextLine();
-
-                Dish oldDish = new Dish();
-                for (Dish oldDishD : resturant.getMenu()){
-                    if (oldDishD.getName().equals(oldName)) {
-                        oldDish = oldDishD;
+                while (true){
+                    double rating;
+                    try {
+                        presenter.print("New rating");
+                        rating = Double.valueOf(presenter.read());
+                    } catch (NumberFormatException e) {
+                        presenter.print("invalid input");
+                        continue;
                     }
+                    resturant.setRating(rating);
+                    break;
                 }
 
-                System.out.println("New dish name:");
-                String newName = scanner.nextLine();
+            }
 
-                System.out.println("New description:");
-                String newDesc = scanner.nextLine();
+            else if (choice.equals("2")) {
+                Dish newdish = new Dish();
+
+                presenter.print("Dish name");
+                newdish.setName(presenter.read());
+
+                presenter.print("Category (A Appetizer /M Main_Course /D Desert /B brevelge)");
+                char c = presenter.read().toUpperCase().charAt(0);
+
+                if (c == 'A') newdish.setCategory(Category.APPETIZER);
+                if (c == 'M') newdish.setCategory(Category.MAIN_COURSE);
+                if (c == 'D') newdish.setCategory(Category.DESSERT);
+                if (c == 'B') newdish.setCategory(Category.DRINK);
+
+                while (true){
+                    double price;
+                    try {
+                        presenter.print("Price");
+                        price = Double.valueOf(presenter.read());
+                    } catch (NumberFormatException e) {
+                        presenter.print("invalid input");
+                        continue;
+                    }
+                    newdish.setPrice(price);
+                    break;
+                }
+
+                resturant.addDish(newdish);
+            }
+
+            else if (choice.equals("3")) {
+                presenter.print("Dish name");
+                for (Dish dish : resturant.getMenu()) {
+                    if (dish.getName().equals(presenter.read())) {
+                        resturant.removeDish(dish);
+                    }
+                }
+            }
+
+            else if (choice.equals("4")) {
+                presenter.print("Old dish name:");
+                String oldName = presenter.read();
+
+                Dish oldDish = resturant.getMenu().get(
+                        resturant.getMenu().indexOf(new Dish(oldName)));
+
+                presenter.print("old dish :" + oldDish);
+
+                presenter.print("New dish name:");
+                String newName = presenter.read();
+
+                presenter.print("New description:");
+                String newDesc = presenter.read();
 
 
                 Category newCategory = Category.APPETIZER;
-                System.out.println("Category (A Appetizer /M Main_Course /D Desert /B brevelge)");
-                char c = scanner.nextLine().toUpperCase().charAt(0);
+                presenter.print("Category (A Appetizer /M Main_Course /D Desert /B brevelge)");
+                char c = presenter.read().toUpperCase().charAt(0);
                 if (c == 'A') newCategory = Category.APPETIZER;
                 if (c == 'M') newCategory = Category.MAIN_COURSE;
                 if (c == 'D') newCategory = Category.DESSERT;
                 if (c == 'B') newCategory = Category.DRINK;
 
-                System.out.println("New price:");
-                double price = scanner.nextDouble();
+                double price;
+                while (true){
+
+                    try {
+                        presenter.print("Price");
+                        price = Double.valueOf(presenter.read());
+                    } catch (NumberFormatException e) {
+                        presenter.print("invalid input");
+                        continue;
+                    }
+                    break;
+                }
 
                 Dish newDish = new Dish(newName, newDesc, newCategory, price);
 
                 resturant.updateDish(oldDish, newDish);
             }
-            else {
-                System.out.println("client name: " + CustomerRepo.getCustomerList().get(index).getName() +
+
+            /*else {
+                presenter.print("client name: " + CustomerRepo.getCustomerList().get(index).getName() +
                         "client email" + CustomerRepo.getCustomerList().get(index).getEmail() +
                         "client address" + CustomerRepo.getCustomerList().get(index).getAddress() +
                         "client number" + CustomerRepo.getCustomerList().get(index).getPhoneNo());
-                System.out.println("Type the client's name");//Show data!!!!!!!!!!!!!
-                Scanner input2=new Scanner(System.in);
-                String client_name =input2.nextLine();
+                presenter.print("Type the client's name");//Show data!!!!!!!!!!!!!
 
-                System.out.println("Type the client's email");
-                String clients_email =input2.nextLine();
+                String client_name = presenter.read();
 
-                System.out.println("Type the client's number");
-                String clients_number =input2.nextLine();
+                presenter.print("Type the client's email");
+                String clients_email = presenter.read();
 
-                System.out.println("Type the client's address");
-                String clients_address =input2.nextLine();
+                presenter.print("Type the client's number");
+                String clients_number = presenter.read();
+
+                presenter.print("Type the client's address");
+                String clients_address = presenter.read();
 
                 CustomerRepo.getCustomerList().get(index).setName(client_name);
 
@@ -241,41 +259,40 @@ public class Admin extends User {
 
                 CustomerRepo.getCustomerList().get(index).setPhoneNo(clients_number);
 
-        } while (choice != 0);
+            }
+            while (choice != 0) ;*/
+        }while (true);
     }
 
-    public void editCustomerDetail(String name) {
-        Customer customer = new Customer();
-        for (Customer customer1 : CustomerRepo.getCustomerList()){
-            if (customer1.getName().equals(name)) {
-                customer = customer1;
-            }
+    public void editCustomerDetail(String phone) {
+        Customer customer = CustomerRepo.getCustomerList().get(
+                CustomerRepo.getCustomerList().indexOf()
+        );
 
-            System.out.println("Do you want to cancle order");
-            Scanner input=new Scanner(System.in);
-            String chois= input.nextLine();
-            if (chois=="cancle"){
+            presenter.print("Do you want to cancel order");
+            String chois= presenter.read();
+            if (chois == "cancle"){
                 // here there is an error because the fn cancelOrder takes int (orderNumber you want to cancel) as parameter
                 //CustomerRepo.getCustomerList().get(index).cancelOrder();
             }
 
 
         }
-        System.out.println("New name");
-        customer.setName(scanner.nextLine());
+        presenter.print("New name");
+        customer.setName(presenter.read());
 
-        System.out.println("New email");
-        customer.setEmail(scanner.nextLine());
+        presenter.print("New email");
+        customer.setEmail(presenter.read());
 
-        System.out.println("New phone");
-        customer.setNumber(scanner.nextLine());
+        presenter.print("New phone");
+        customer.setPhoneNo(presenter.read());
 
-        System.out.println("New address");
-        customer.setAddress(scanner.nextLine());
+        presenter.print("New address");
+        customer.setAddress(presenter.read());
     }
 
     public void removeCustomer(String name) {
-        Customer customer = new Customer();
+        Customer customer = new Customer(presenter);
         for (Customer customer1 : CustomerRepo.getCustomerList()){
             if (customer1.getName().equals(name)) {
                 customer = customer1;
