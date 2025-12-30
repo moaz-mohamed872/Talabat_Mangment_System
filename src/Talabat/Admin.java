@@ -149,7 +149,6 @@ public class Admin extends User {
                 }
 
             }
-
             else if (choice.equals("2")) {
                 Dish newdish = new Dish();
 
@@ -179,7 +178,6 @@ public class Admin extends User {
 
                 resturant.addDish(newdish);
             }
-
             else if (choice.equals("3")) {
                 presenter.print("Dish name");
                 for (Dish dish : resturant.getMenu()) {
@@ -188,7 +186,6 @@ public class Admin extends User {
                     }
                 }
             }
-
             else if (choice.equals("4")) {
                 presenter.print("Old dish name:");
                 String oldName = presenter.read();
@@ -215,7 +212,6 @@ public class Admin extends User {
 
                 double price;
                 while (true){
-
                     try {
                         presenter.print("Price");
                         price = Double.valueOf(presenter.read());
@@ -230,8 +226,9 @@ public class Admin extends User {
 
                 resturant.updateDish(oldDish, newDish);
             }
-
-        }while (true);
+            else
+                presenter.print("invalid input");
+        }while (! choice.equals("0"));
     }
 
     public void editCustomerDetail() {
