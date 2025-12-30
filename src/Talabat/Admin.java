@@ -1,10 +1,8 @@
 package Talabat;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class Admin  {
-
+public class Admin extends User {
     private Presentable presenter;
 
     public Admin(Presentable presenter) {
@@ -35,13 +33,11 @@ public class Admin  {
             else if (choice.equals("4")) {
                 presenter.print("Enter restaurant name");
                 editResDetail(presenter.read());
-            } else if (choice.equals("5")) {
-                presenter.print("Enter customer phone no.");
-                editCustomerDetail(presenter.read());
-            } else if (choice.equals("6")) {
-                presenter.print("Enter customer name");
-                removeCustomer(presenter.read());
-            } else
+            } else if (choice.equals("5"))
+                editCustomerDetail();
+            else if (choice.equals("6"))
+                removeCustomer();
+            else
                 presenter.print("invalid input");
 
         } while (!choice.equals("0"));
@@ -235,49 +231,29 @@ public class Admin  {
                 resturant.updateDish(oldDish, newDish);
             }
 
-            /*else {
-                presenter.print("client name: " + CustomerRepo.getCustomerList().get(index).getName() +
-                        "client email" + CustomerRepo.getCustomerList().get(index).getEmail() +
-                        "client address" + CustomerRepo.getCustomerList().get(index).getAddress() +
-                        "client number" + CustomerRepo.getCustomerList().get(index).getPhoneNo());
-                presenter.print("Type the client's name");//Show data!!!!!!!!!!!!!
-
-                String client_name = presenter.read();
-
-                presenter.print("Type the client's email");
-                String clients_email = presenter.read();
-
-                presenter.print("Type the client's number");
-                String clients_number = presenter.read();
-
-                presenter.print("Type the client's address");
-                String clients_address = presenter.read();
-
-                CustomerRepo.getCustomerList().get(index).setName(client_name);
-
-                CustomerRepo.getCustomerList().get(index).setEmail(clients_email);
-
-                CustomerRepo.getCustomerList().get(index).setPhoneNo(clients_number);
-
-            }
-            while (choice != 0) ;*/
         }while (true);
     }
 
-    public void editCustomerDetail(String phone) {
-        Customer customer = CustomerRepo.getCustomerList().get(
-                CustomerRepo.getCustomerList().indexOf()
-        );
+    public void editCustomerDetail() {
+        Customer customer;
+        while(true){
+            presenter.print("please enter the phone of the customer to delete(x to cancle): ");
+            String phone = presenter.read();
+            if(phone.equals("x"))
+                return;
 
-            presenter.print("Do you want to cancel order");
-            String chois= presenter.read();
-            if (chois == "cancle"){
-                // here there is an error because the fn cancelOrder takes int (orderNumber you want to cancel) as parameter
-                //CustomerRepo.getCustomerList().get(index).cancelOrder();
-            }
-
-
+            int index = CustomerRepo.getCustomerList().indexOf(new Customer(phone, presenter));
+            if(index == -1)
+                continue;
+            customer = CustomerRepo.getCustomerList().get(index);
+            break;
         }
+        presenter.print("Enter x to cancle");
+        String chois= presenter.read();
+
+        if (chois.toLowerCase().equals("x"))
+                return;
+
         presenter.print("New name");
         customer.setName(presenter.read());
 
@@ -291,15 +267,15 @@ public class Admin  {
         customer.setAddress(presenter.read());
     }
 
-    public void removeCustomer(String name) {
-        Customer customer = new Customer(presenter);
-        for (Customer customer1 : CustomerRepo.getCustomerList()){
-            if (customer1.getName().equals(name)) {
-                customer = customer1;
-            }
+    public void removeCustomer() {
+        while(true){
+            presenter.print("please enter the phone of the customer to delete:");
+            String phone = presenter.read();
+            int index = CustomerRepo.getCustomerList().indexOf(new Customer(phone, presenter));
+            if(index == -1)
+                continue;
+            CustomerRepo.getCustomerList().remove(index);
+            break;
         }
-
-        if (!CustomerRepo.getCustomerList().remove(customer))
-            throw new IllegalArgumentException("Customer not found");
     }
 }

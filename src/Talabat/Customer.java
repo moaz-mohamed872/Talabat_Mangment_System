@@ -49,7 +49,10 @@ public class Customer extends User {
         this.orders = new ArrayList<>(other.orders);
     }
 
-
+    public Customer(String phoneNo, Presentable presenter) {
+        this(presenter);
+        this.phoneNo = phoneNo;
+    }
 
     // the following 8 Methods are the setters and the getters for the fields
     public void setName(String name) {
@@ -296,5 +299,11 @@ public class Customer extends User {
     @Override
     public String toString() {
         return this.getName() + " "+this.getAddress()+ " "+this.getEmail()+" "+getPhoneNo();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Customer other = (Customer) obj;
+        return this.phoneNo.equals(other.getPhoneNo());
     }
 }
