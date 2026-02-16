@@ -52,13 +52,13 @@ public class Order {
                 presenter ) ;
     }
 
-    public Order(Order otherOrder){
+    public Order(Order otherOrder, Presentable presenter){
         this(otherOrder.getNumber(),
                 otherOrder.getResturant(),
                 otherOrder.getDeliveryTime(),
                 otherOrder.getStatus(),
                 otherOrder.getMenu(),
-                otherOrder.getPresenter());
+                presenter);
     }
 
 

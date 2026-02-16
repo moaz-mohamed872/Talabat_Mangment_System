@@ -8,6 +8,10 @@ public class SystemActions {
     }
 
     public static User startSystem() {
+        CustomerRepo.setPresenter(presenter);
+        ResturantRepo.dummyData();
+        CustomerRepo.dummyData();
+
         presenter.print("\t\t ======= welcome to Talabat =======");
         presenter.print("1) log in\n" + "2) sign in");
         while (true){
@@ -89,7 +93,65 @@ public class SystemActions {
         return customer;
     }
 
-    public static void showMainOptions(){}
+    public static void showMainOptions(User user){
+        if (user instanceof Admin) {
+            Admin admin = (Admin) user;
+
+            String choice;
+            do {
+                presenter.print("\n====== ADMIN MENU ======\n" +
+                        "1. View Customers\n" +
+                        "2. View Restaurants\n" +
+                        "3. Add Restaurant\n" +
+                        "4. Edit Restaurant\n" +
+                        "5. Edit Customer\n" +
+                        "6. Remove Customer\n" +
+                        "0. Logout \n");
+
+                choice = presenter.read();
+
+                if (choice.equals("1"))
+                    admin.viewCustomerList(CustomerRepo.getCustomerList());
+                else if (choice.equals("2"))
+                    admin.viewResList(ResturantRepo.getResturantlist());
+                else if (choice.equals("3"))
+                    admin.addRes();
+                else if (choice.equals("4")) {
+                    presenter.print("Enter restaurant name");
+                    admin.editResDetail(presenter.read());
+                } else if (choice.equals("5"))
+                    admin.editCustomerDetail();
+                else if (choice.equals("6"))
+                    admin.removeCustomer();
+                else if (choice.equals("0"))
+                    return;
+                else
+                    presenter.print("invalid input");
+            } while (!choice.equals("0"));
+        }
+        else if (user instanceof Customer){
+            Customer customer = (Customer) user;
+
+            String choice;
+            do {
+                presenter.print("\n====== ADMIN MENU ======\n" +
+                        "1. New Order\n" +
+                        "2. Track Oder\n" +
+                        "0. Logout \n");
+
+                choice = presenter.read();
+
+                if (choice.equals("1"))
+                    customer.newOrder();
+                else if (choice.equals("2"))
+                    customer.trackOrder();
+                else if (choice.equals("0"))
+                    return;
+                else
+                    presenter.print("invalid input");
+            } while (!choice.equals("0"));
+        }
+    }
 
     public static Resturant showResLis() {
         Resturant restaurantPicked; //this var will have the Restaurant that the Customer Choose

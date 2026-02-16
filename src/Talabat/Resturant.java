@@ -54,7 +54,8 @@ public class Resturant {
                    menulist.append( "===" ).append(category).append(" ====\n");
                     dishes.stream()
                             .forEach(dish ->
-                                    menulist.append("\t-").append(this.menu.indexOf(dish)+1).append(dish.getName()).append(" ").append(dish.getPrice()).append(" \n")
+                                    menulist.append("\t").append(this.menu.indexOf(dish)+1+"-\t").append(dish.getName()).append(" ").append(dish.getPrice()).append(" \n")
+
                             );
                });
 

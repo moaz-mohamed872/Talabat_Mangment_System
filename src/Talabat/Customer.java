@@ -156,9 +156,10 @@ public class Customer extends User {
             answer = presenter.read();
 
             if (answer.toLowerCase().equals("n")) {
+                customerOrder = new Order(presenter);
                 customerOrder.setMenu(customerAllDishes);
                 //here remeber that you will the constructur all the data you want
-                customerOrder = new Order(presenter);
+
                 break;
             } else if (!answer.toLowerCase().equals("y")) {
                 presenter.print("Invalid Choice plz enter the valid choice");
