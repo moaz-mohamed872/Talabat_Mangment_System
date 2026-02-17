@@ -12,15 +12,16 @@ public class SystemActions {
         ResturantRepo.dummyData();
         CustomerRepo.dummyData();
 
-        presenter.print("\t\t ======= welcome to Talabat =======");
-        presenter.print("1) log in\n" + "2) sign in");
+        presenter.print("\n\n\t\t ======= welcome to Talabat =======");
+        presenter.print("1) log in\n" + "2) sign in\n" + "0) Exit");
         while (true){
             String answer = presenter.read();
             if (answer.equals("1"))
-                return login();
+                 return login();
             else if (answer.equals("2"))
                 return signin();
-
+            else if (answer.equals("0"))
+                return null;
             System.out.println("invalid answer, please try again");
         }
     }
@@ -63,7 +64,8 @@ public class SystemActions {
                         continue;
                     }
                     else {
-                        presenter.print("welcome back" + user.getUserName());
+                        Customer c = (Customer)user;
+                        presenter.print("welcome back " + c.getName());
                         user.login();
                     }
                     break;
@@ -122,8 +124,10 @@ public class SystemActions {
                     admin.editCustomerDetail();
                 else if (choice.equals("6"))
                     admin.removeCustomer();
-                else if (choice.equals("0"))
+                else if (choice.equals("0")) {
+                    admin.logout();
                     return;
+                }
                 else
                     presenter.print("invalid input");
             } while (!choice.equals("0"));
@@ -147,8 +151,10 @@ public class SystemActions {
                     customer.trackOrder();
                 else if (choice.equals("3"))
                     customer.cancelOrder();
-                else if (choice.equals("0"))
+                else if (choice.equals("0")) {
+                    customer.logout();
                     return;
+                }
                 else
                     presenter.print("invalid input");
             } while (!choice.equals("0"));

@@ -22,7 +22,6 @@ public abstract class User {
         this("","",false);
     }
 
-
     public String getUserName() {
         return userName;
     }
