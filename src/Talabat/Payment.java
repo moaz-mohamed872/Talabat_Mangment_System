@@ -16,22 +16,23 @@ public class Payment {
 
     private Presentable presenter;
 
-    private Payment(String payMethod, double amount, int transactionID) {
+    private Payment(String payMethod, double amount, int transactionID, Presentable presenter) {
         this.payMethod = payMethod;
         this.amount = amount;
         this.transactionID = transactionID;
+        this.presenter=presenter;
     }
 
-    public Payment(String payMethod, double amount) {
-            this(payMethod, amount, (int) Math.random() * 100000 + 1000 );
+    public Payment(String payMethod, double amount, Presentable presenter) {
+            this(payMethod, amount, (int) Math.random() * 100000 + 1000 , presenter);
     }
 
-    public Payment(){
-        this("c", 0);
+    public Payment(Presentable presenter){
+        this("c", 0, presenter);
     }
 
-    public Payment(Payment otherPayment){
-        this(otherPayment.payMethod, otherPayment.amount, otherPayment.transactionID);
+    public Payment(Payment otherPayment, Presentable presenter){
+        this(otherPayment.payMethod, otherPayment.amount, otherPayment.transactionID,presenter);
 
     }
 

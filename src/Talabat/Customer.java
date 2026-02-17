@@ -167,7 +167,7 @@ public class Customer extends User {
         }
         this.orders.add(customerOrder);
         customerOrder.setResturant(res);
-        customerOrder.showOrder();
+        customerOrder.finishOrder(this.address);
         return customerOrder;
      }
 
@@ -217,18 +217,25 @@ public class Customer extends User {
      }
 
      public void trackOrder(){
+         if(this.orders.isEmpty()){
+             presenter.print("there is no orders to track ");
+             return;
+         }
         Integer orderPicked;
          for(Order order : this.orders){
              presenter.print((order.getNumber()));
              presenter.print(order.getResturant().getName());
              presenter.print("---------------------- \t ----------------------------");
          }
-         presenter.print("Enter the number of the Order you want to track");
+         presenter.print("Enter the number of the Order you want to track Enter 'x' to cancel");
 
          //this loop to see if the number he enterd for the orderNumber valid or not found
          while(true) {
              try {
-                 orderPicked = Integer.valueOf(presenter.read());
+                 String answer = presenter.read();
+                 if(answer.toLowerCase().equals("x"))
+                     return;
+                 orderPicked = Integer.valueOf(answer);
                  boolean found = false;
 
                  for (Order order : this.orders) {

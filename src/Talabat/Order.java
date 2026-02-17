@@ -14,12 +14,12 @@ public class Order {
     private OrderStatus status;
     private ArrayList<OrderItem> menu;
     private Payment payment;
-    private static int counter;
+    private static int counter=0;
     private NumberFormat formatter;
     private Presentable presenter;
 
     public Order(Presentable presenter) {
-        this(0,
+        this( counter,
                 null,
                 null,
                 OrderStatus.Preparing,
@@ -31,12 +31,13 @@ public class Order {
 
     private Order(int number, Resturant resturant, LocalDateTime deliveryTime,
                   OrderStatus status, ArrayList<OrderItem> dishList, Presentable presenter) {
+
         setResturant(resturant);
         setDeliveryTime(deliveryTime);
         setStatus(status);
         setNumber(number);
         setMenu(dishList);
-    this.presenter=presenter;
+        this.presenter=presenter;
         formatter = NumberFormat.getCurrencyInstance(Locale.US);
     }
 
@@ -44,7 +45,7 @@ public class Order {
                  ArrayList<OrderItem> dishList,
                  Presentable presenter) {
 
-        this(counter++,
+        this(counter,
                 resturant,
                 LocalDateTime.now().plusMinutes(20),
                 OrderStatus.Preparing,
@@ -124,16 +125,13 @@ public class Order {
         }
     }
 
-    private boolean finishOrder(String address){
+    public boolean finishOrder(String address){
+        presenter.print("address:" + address + "\n");
 
-        presenter.print("address:" + address + "\n\n");
+        for(OrderItem item : menu)
+            presenter.print("\t-"+item);
 
-        for(OrderItem item : menu){
-            presenter.print("\t-");
-            presenter.print(item);
-        }
-
-        presenter.print("\n\n\tSub_total:" + formatter.format(totalPrice));
+        presenter.print("\n\tSub_total:" + formatter.format(totalPrice));
         presenter.print("\tDelivery_price:" + formatter.format(20));
         presenter.print("Total:" + formatter.format(totalPrice+20));
 
@@ -145,8 +143,9 @@ public class Order {
             if(input.toLowerCase().equals("x"))
                 return false ;
             else if(input.toLowerCase().equals("p")){
-                payment = new Payment() ;
+                payment = new Payment(presenter) ;
                 payment.processPayment();
+                this.setNumber(++counter);
                 return true;
             }
             else
@@ -158,14 +157,14 @@ public class Order {
 
         presenter.print("Order Number: " + number);
 
-        //here is the issue
+        //here is the issue ------->><><><><><><><><><><><><>
         presenter.print("Restaurant: " + this.getResturant().getName());
 
         presenter.print("Status: "+ status);
 
         presenter.print("Delivery Time: "+ deliveryTime);
 
-        presenter.print("\n\nItems:");
+        presenter.print("\n\nItems: ");
         for(OrderItem item : menu){
             presenter.print("\t -");
             presenter.print(item);
