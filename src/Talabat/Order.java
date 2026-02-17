@@ -21,7 +21,7 @@ public class Order {
     public Order(Presentable presenter) {
         this( counter,
                 null,
-                null,
+                LocalDateTime.now(),
                 OrderStatus.Preparing,
                 new ArrayList<OrderItem>(),
                 presenter) ;
