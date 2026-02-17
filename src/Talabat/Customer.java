@@ -7,7 +7,7 @@ public class Customer extends User {
     private String phoneNo;
     private String email;
     private ArrayList<Order> orders;
-    Presentable presenter;
+    private Presentable presenter;
 
 
     public Customer(Presentable presenter){

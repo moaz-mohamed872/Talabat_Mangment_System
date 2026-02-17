@@ -36,7 +36,7 @@ public class Order {
         setStatus(status);
         setNumber(number);
         setMenu(dishList);
-
+    this.presenter=presenter;
         formatter = NumberFormat.getCurrencyInstance(Locale.US);
     }
 
