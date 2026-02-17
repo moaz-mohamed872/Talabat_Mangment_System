@@ -1,6 +1,7 @@
 package Talabat;
 
 import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -161,12 +162,15 @@ public class Order {
         presenter.print("Restaurant: " + this.getResturant().getName());
 
         presenter.print("Status: "+ status);
+        deliveryTime = LocalDateTime.now().plusMinutes(20);
+        DateTimeFormatter formatterd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        presenter.print("Delivery Time: "+ deliveryTime.format(formatterd) );
 
-        presenter.print("Delivery Time: "+ deliveryTime);
-
-        presenter.print("\nItems: ");
-        for(OrderItem item : menu)
-            presenter.print("\t - "+item);
+        presenter.print("\n\nItems: ");
+        for(OrderItem item : menu){
+            presenter.print("\t -");
+            presenter.print(item);
+        }
 
         presenter.print("Total_Price:" + formatter.format(totalPrice));
         presenter.print("\n");
