@@ -103,12 +103,13 @@ public class Customer extends User {
          // this arraylist to add init the orderitem for customer and to make the order arraylist of menu have it
          ArrayList<OrderItem> customerAllDishes = new ArrayList<>();
 
-         OrderItem orderCustomerPicked = new OrderItem();
+         OrderItem orderCustomerPicked;
 
 
             presenter.print("Menu"+"\n\t");
             presenter.print(res.showMenu());
         while(true) {
+            orderCustomerPicked = new OrderItem();
             presenter.print("Enter Dish no. (enter X to cancel) : ");
             String dishChoice = presenter.read();// this var is the customer when he chooses number dish he want in menu
 
@@ -188,6 +189,10 @@ public class Customer extends User {
 
      public void cancelOrder(){
         int orderNumber;
+        if(orders.isEmpty()){
+            presenter.print("no orders to cancel");
+            return;
+        }
          for(Order order : this.orders){
              presenter.print((order.getNumber()));
              presenter.print(order.getResturant().getName());
