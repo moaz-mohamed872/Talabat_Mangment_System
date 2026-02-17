@@ -164,11 +164,9 @@ public class Order {
 
         presenter.print("Delivery Time: "+ deliveryTime);
 
-        presenter.print("\n\nItems: ");
-        for(OrderItem item : menu){
-            presenter.print("\t -");
-            presenter.print(item);
-        }
+        presenter.print("\nItems: ");
+        for(OrderItem item : menu)
+            presenter.print("\t - "+item);
 
         presenter.print("Total_Price:" + formatter.format(totalPrice));
         presenter.print("\n");

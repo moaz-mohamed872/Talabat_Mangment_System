@@ -133,9 +133,10 @@ public class SystemActions {
 
             String choice;
             do {
-                presenter.print("\n====== Customer MENU ======\n" +
+                presenter.print("\n====== Main MENU ======\n" +
                         "1. New Order\n" +
                         "2. Track Oder\n" +
+                        "3. Cancel Order\n" +
                         "0. Logout \n");
 
                 choice = presenter.read();
@@ -144,6 +145,8 @@ public class SystemActions {
                     customer.newOrder();
                 else if (choice.equals("2"))
                     customer.trackOrder();
+                else if (choice.equals("3"))
+                    customer.cancelOrder();
                 else if (choice.equals("0"))
                     return;
                 else
