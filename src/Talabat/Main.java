@@ -5,8 +5,10 @@ public class Main {
         ConsolePresenter presenter = new ConsolePresenter();
         SystemActions.setPresenter(presenter);
 
-        User currUser = SystemActions.startSystem();
-        SystemActions.showMainOptions(currUser);
-        currUser.logout();
+        User currUser = new Customer(presenter);
+        while(currUser != null) {
+            currUser = SystemActions.startSystem();
+            SystemActions.showMainOptions(currUser);
+        }
     }
 }
